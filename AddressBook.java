@@ -84,6 +84,44 @@ class Contact{
 
 	}
 
+	//UC3 Ability to edit existing contact person using their name
+	public String usingEditName()
+	{
+		System.out.println("\n------< Edit details >------");
+		System.out.println("Enter Name to edit the details = ");
+		String editName=scan.nextLine();
+		return editName;
+	}
+
+	public int usingPosition(String editName)
+	{
+		int editPosition=Firstname.indexOf(editName);
+		return editPosition;
+	}
+	
+	public void editDetails() 
+	{
+			String nameEdit=usingEditName();
+			int editPos=usingPosition(nameEdit);
+
+			if(Firstname.contains(nameEdit)==true)
+			{	
+				Firstname.set(editPos, firstName());
+				Lastname.set(editPos, lastName());
+				Address.set(editPos, address());
+				City.set(editPos, city());
+				State.set(editPos,state());
+				Zip.set(editPos,zip());
+				Phone.set(editPos,phone());
+				Emailid.set(editPos,email());
+				System.out.println("\nYou have successfully Edited the person Details!");
+			}
+	}
+
+	public void display()
+	{
+		System.out.println("AddressBook [First name=" + Firstname + ", Last name=" + Lastname + ", Address= " + Address + ", City=" + City + ", State="+ State + ", Zip=" + Zip + ", Phone=" + Phone+ ", Email=" + Emailid + "]");
+	}
 
 public class AddressBook{
 
@@ -96,21 +134,26 @@ public class AddressBook{
 		
 		while(true)
         {
-	        System.out.println("\nAddress Book Menu");
-	        System.out.println("Enter 1 to Add Person ");
-	        System.out.print("\nPlease enter your choice: ");
-	        int choice=scan.nextInt();
-	        scan.nextLine();
+	        	System.out.println("\nAddress Book Menu");
+	        	System.out.println("Enter 1 to Add Person ");
+				System.out.println("Enter 2 to Edit Person");
+			  	System.out.print("\nPlease enter your choice: ");
 
-	        switch (choice) 
-	        {
-		        	case 1 :
-			        	contact.addDetails();
-			        	contact.display();
+				int choice=scan.nextInt();
+	        	scan.nextLine();
+
+	        	switch (choice) 
+	        	{
+					case 1 :
+						contact.addDetails();
+						contact.display();
 			        	break;
+					case 2 :
+		        		contact.editDetails();
+		        		contact.display();
+		        		break;
 					default:
 		        		break;
-
 	        }
 	    }
 	}
