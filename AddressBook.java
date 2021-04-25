@@ -1,227 +1,251 @@
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
-class Contact{
-	
-	//UC1 Ability to create a Contacts in Address Book
-	Scanner scan = new Scanner(System.in);
-	private ArrayList<String> Firstname = new ArrayList<String>();	
-	private ArrayList<String> Lastname = new ArrayList<String>();
-	private ArrayList<String> Address = new ArrayList<String>();
-	private ArrayList<String> City = new ArrayList<String>();
-	private ArrayList<String> State = new ArrayList<String>();
-	private ArrayList<String> Zip = new ArrayList<String>();
-	private ArrayList<String> Phone = new ArrayList<String>();
-	private ArrayList<String> Emailid = new ArrayList<String>();
-	
-	public String firstName()
-	{
-		System.out.println("------< Create Contact >------");  
-	    System.out.print("Enter Firstname: ");
-	    String firstname=scan.nextLine();
-	    return firstname;
-	      
-	}
-	public String lastName()
-	{
-		System.out.print("Enter Lastname: ");
-	    String lastname=scan.nextLine();
-	    return lastname;
-	}
-	
-	public String address()
-	{
-		System.out.print("Enter Address: ");
-	    String address=scan.nextLine();
-	    return address;
-	}
-	public String city()
-	{
-		System.out.print("Enter City: ");
-	    String city=scan.nextLine();
-	    return city;
-	}
-	public String state()
-	{
-	    System.out.print("Enter State: ");
-	    String state=scan.nextLine();
-	    return state;
-	}
-	
-	public String zip()
-	{
-		System.out.print("Enter Zip Code: ");
-		String zip=scan.nextLine();
-	    return zip;
+class Contact {
+
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String city;
+    private String state;
+    private String zip;
+    private String phone;
+    private String email;
+
+    public Contact(String firstName, String lastName, String address, String city, String state, String zip, String phone, String email) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.phone = phone;
+        this.email = email;
+    }
+
+    public String getFirstName() {
+        return this.firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return this.lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCity() {
+        return this.city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getState() {
+        return this.state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setZip(String zip) {
+        this.zip = zip;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String toString() {
+
+        return "Details of: " + firstName+"\n"
+        		+ "First Name: "+ firstName +"\n" 
+        		+ "Last Name: " + lastName+"\n"
+                + "Address: " + address + "\n"
+                + "City: " + city + "\n"
+                + "State: " + state + "\n"
+                + "Zip: " + zip + "\n"
+                + "Phone Number: " + phone + "\n"
+                + "Email: " + email;
+    }
+}
+
+//UC6 Refactor to add multiple Address Book to the System, Each Address Book has a unique Name
+public class AddressBook {
+	static ArrayList<Contact> list = new ArrayList<Contact>();
+	static Map<String,AddressBook> map = new HashMap<>();
+	static int number=0;
+	static int a;
+
+	static Scanner sc = new Scanner(System.in);
+	public static String check = "Y";
+
+	public static void addDetails(){
+
+		check = "Y";
+		while((check.equals("Y")) || (check.equals("y"))) {
+
+			System.out.println("------< Create Contact >------\n");
+			System.out.print("Enter First Name ");
+			String firstName=sc.next();
+			System.out.print("Enter LastName ");
+			String lastName=sc.next();
+			System.out.print("Enter Address ");
+			String area=sc.next();
+			System.out.print("Enter City ");
+			String city=sc.next();
+			System.out.print("Enter State ");
+			String state=sc.next();
+			System.out.print("Enter Zip ");
+			String zip=sc.next();
+			System.out.print("Enter Phone Number ");
+			String phoneNumber=sc.next();
+			System.out.print("Enter Email ");
+			String email=sc.next();
+
+			System.out.println("Want To Add Another Contact ? Yes(y)/No(n)");
+			check=sc.next();
+
+			list.add( new Contact(firstName, lastName, area, city, state, zip, phoneNumber, email));
+		}
 	}
 
-	public String phone()
-	{
-		System.out.print("Enter Phone number: ");
-	    String phone=scan.nextLine();
-	    return phone;
-	}
-	
-	public String email()
-	{
-		System.out.print("Enter Email: ");
-	    String emailid=scan.nextLine();
-	    return emailid;
-	}
-	
-	//UC2 Ability to add a new Contact to Address Book
-	public void addDetails() 
-	{	
-		Firstname.add(firstName());
-		Lastname.add(lastName());
-		Address.add(address());
-		City.add(city());
-		State.add(state());
-		Zip.add(zip());
-		Phone.add(phone());
-		Emailid.add(email());
-		System.out.println("\nYou have successfully added a new person!");
-		
-	}
+	public static void editDetails() {
 
-	//UC3 Ability to edit existing contact person using their name
-	public String usingEditName()
-	{
+		String nameEdit;
 		System.out.println("\n------< Edit details >------");
 		System.out.println("Enter Name to edit the details = ");
-		String editName=scan.nextLine();
-		return editName;
-	}
+		nameEdit = sc.next();
 
-	public int usingPosition(String editName)
-	{
-		int editPosition=Firstname.indexOf(editName);
-		return editPosition;
-	}
-	public void editDetails() 
-	{
-			String nameEdit=usingEditName();
-			int editPos=usingPosition(nameEdit);
-		
-			if(Firstname.contains(nameEdit)==true)
-			{	
-				Firstname.set(editPos, firstName());
-				Lastname.set(editPos, lastName());
-				Address.set(editPos, address());
-				City.set(editPos, city());
-				State.set(editPos,state());
-				Zip.set(editPos,zip());
-				Phone.set(editPos,phone());
-				Emailid.set(editPos,email());
-				System.out.println("\nYou have successfully Edited the person Details!");
+			for(int i=0; i<list.size(); i++) {
+
+				if (nameEdit.equals(list.get(i).getFirstName())) {
+
+					System.out.print("Enter First Name ");
+					list.get(i).setFirstName(sc.next());
+					System.out.print("Enter Last Name ");
+					list.get(i).setLastName(sc.next());
+					System.out.print("Enter Arddress ");
+					list.get(i).setAddress(sc.next());
+					System.out.print("Enter City ");
+					list.get(i).setCity(sc.next());
+					System.out.print("Enter State ");
+					list.get(i).setState(sc.next());
+					System.out.print("Enter Zip ");
+					list.get(i).setZip(sc.next());
+					System.out.print("Enter Phone Number ");
+					list.get(i).setPhone(sc.next());
+					System.out.print("Enter Email ");
+					list.get(i).setEmail(sc.next());
+
+					System.out.println(list.get(i));
+					System.out.println("Details Edited!\n");
+				}
+				else {
+					System.out.println("Invalid name!");
+				}
 			}
 	}
-	
-	//UC4 Ability to delete a person using person's name
-	public String usingDeleteName()
-	{
-		System.out.println("\n------< Delete details >------");
-		System.out.println("Enter Name to Delete the details = ");
-		String editName=scan.nextLine();
-		return editName;
+
+	public static void deleteDetails() { 
+		String nameDelete;
+		System.out.println("------< Delete Contact >------\n");
+		System.out.print("Enter FirstName");
+		nameDelete =sc.next();
+
+		for(int i=0; i<list.size(); i++) {
+			if (nameDelete.equals(list.get(0).getFirstName())) {
+				list.remove(0);
+         	System.out.println("Details Deleted!\n");
+			}
+			else {
+				System.out.println("Invalid name!");
+			}
+		}
+		
 	}
-	
-	public void deleteDetails()
-	{
-		String nameDelete=usingDeleteName();
-		int deletePos=usingPosition(nameDelete);
-	
-		if(Firstname.contains(nameDelete)==true)
-		{	
-			Firstname.remove(deletePos);
-			Lastname.remove(deletePos);
-			Address.remove(deletePos);
-			City.remove(deletePos);
-			State.remove(deletePos);
-			Emailid.remove(deletePos);
-			Zip.remove(deletePos);
-			Phone.remove(deletePos);
-			System.out.println("\nYou have successfully Deleted the person Details!");	
+
+	public static String multipleAddressBook() {
+
+		System.out.print("Enter Name of Address Book = ");
+		String name=sc.next();
+		AddressBook addressBook = new AddressBook();
+		map.put(name, addressBook);
+		System.out.println("New Address Book: " +name);
+		return name;
+	}
+
+	public static void main(String[] args){
+		
+		Scanner scan=new Scanner(System.in);
+		System.out.println("Welcome To Address Book");
+		check = "Y";
+		while((check.equals("Y")) || (check.equals("y"))) {
+
+			String name=multipleAddressBook();
+			System.out.println("\nAddress Book Menu");
+			System.out.println("Enter 1 to Add Person ");
+			System.out.println("Enter 2 to Edit Person");
+			System.out.println("Enter 3 to Delete Person");
+			System.out.println("Enter 4 to Display");
+			System.out.println("Enter 5 to Add Multiple");
+			System.out.print("\nPlease enter your choice: ");
+			int choice=scan.nextInt();
+			scan.nextLine(); 
+			switch (choice) 
+			{
+			case 1 :
+				addDetails();
+			case 2 :
+				System.out.print("Do you want to Edit Contact ? (y/n)");
+				check=sc.next();
+				if (check.equals("y") || check.equals("Y")) {
+					editDetails();
+				}
+				else{
+					System.out.println("Done");
+				}
+			case 3 :
+				System.out.print("Do you want to Delete Contact ? (y/n)");
+				check=sc.next();
+				if (check.equals("y") || check.equals("Y")) {
+					deleteDetails();
+				}
+				else{
+					System.out.println("Done");
+				}
+			case 4 :
+				System.out.println("Contacts in "+name+" AddressBook are: ");
+				if(list.isEmpty())
+				{
+					System.out.println("NO DETAILS FOUND!!");
+				}
+				for(a=number; a<list.size(); a++) {
+					System.out.println(list.get(a));
+					a++;
+				}
+				number=list.size();
+			case 5 :
+				System.out.println("Do You Want to Add More Address Book? (y/n)");
+				check=sc.next();
+				if(check.equalsIgnoreCase("n"))
+					System.out.println("Thank you!!!");
+			}
 		}
 	}
-	
-	//UC5 Ability to add multiple person to Address Book
-	public void addMultipleDetails() 
-	{	
-		while(true)
-		{
-			Firstname.add(firstName());
-			Lastname.add(lastName());
-			Address.add(address());
-			City.add(city());
-			State.add(state());
-			Zip.add(zip());
-			Phone.add(phone());
-			Emailid.add(email());
-			
-			System.out.println("\nYou have successfully added a new person!");
-			
-			System.out.println("Do you want to exit? Y or N");
-			String validation=scan.nextLine();
-			
-			if(validation.equalsIgnoreCase("y"))
-				break;
-		}
-	}
-	
-	public void display()
-	{
-		System.out.println("AddressBook [First name=" + Firstname + ", Last name=" + Lastname + ", Address= " + Address + ", City=" + City + ", State="+ State + ", Zip=" + Zip + ", Phone=" + Phone+ ", Email=" + Emailid + "]");
-	}
 }
-
-public class AddressBook {
-
-	Scanner scan = new Scanner(System.in);
-		
-	public static void main(String[] args) {
-	
-		Scanner scan = new Scanner(System.in);
-		Contact contact=new Contact(); 
-		
-		while(true)
-		{
-	        System.out.println("\nAddress Book Menu");
-	        System.out.println("Enter 1 to Add Person ");
-	        System.out.println("Enter 2 to Edit Person");
-	        System.out.println("Enter 3 to Delete Person");
-	        System.out.println("Enter 4 to Add Multiple");
-	        System.out.print("\nPlease enter your choice: ");
-	        int choice=scan.nextInt();
-	        scan.nextLine();
-
-	        switch (choice) 
-	        {
-		        case 1 :
-		        	contact.addDetails();
-		        	contact.display();
-		        	break;
-			
-		        case 2 :
-		        	contact.editDetails();
-		        	contact.display();
-		        	break;
-	
-		        case 3 :
-		        	contact.deleteDetails();
-		        	contact.display();
-		        	break;
-		        	
-		        case 4 :
-		        	contact.addMultipleDetails();
-		        	contact.display();
-		        	break;			        
-		        default:
-		        	break;
-	
-	        }
-	    }
-	}
-}
-
-
