@@ -68,7 +68,7 @@ class Contact{
 	    String emailid=scan.nextLine();
 	    return emailid;
 	}
-
+	
 	//UC2 Ability to add a new Contact to Address Book
 	public void addDetails() 
 	{	
@@ -81,7 +81,7 @@ class Contact{
 		Phone.add(phone());
 		Emailid.add(email());
 		System.out.println("\nYou have successfully added a new person!");
-
+		
 	}
 
 	//UC3 Ability to edit existing contact person using their name
@@ -103,7 +103,7 @@ class Contact{
 	{
 			String nameEdit=usingEditName();
 			int editPos=usingPosition(nameEdit);
-
+		
 			if(Firstname.contains(nameEdit)==true)
 			{	
 				Firstname.set(editPos, firstName());
@@ -117,16 +117,45 @@ class Contact{
 				System.out.println("\nYou have successfully Edited the person Details!");
 			}
 	}
+	
+	//UC4 Ability to delete a person using person's name
+	public String usingDeleteName()
+	{
+		System.out.println("\n------< Delete details >------");
+		System.out.println("Enter Name to Delete the details = ");
+		String editName=scan.nextLine();
+		return editName;
+	}
+
+	public void deleteDetails()
+	{
+		String nameDelete=usingDeleteName();
+		int deletePos=usingPosition(nameDelete);
+	
+		if(Firstname.contains(nameDelete)==true)
+		{	
+			Firstname.remove(deletePos);
+			Lastname.remove(deletePos);
+			Address.remove(deletePos);
+			City.remove(deletePos);
+			State.remove(deletePos);
+			Emailid.remove(deletePos);
+			Zip.remove(deletePos);
+			Phone.remove(deletePos);
+			System.out.println("\nYou have successfully Deleted the person Details!");	
+		}
+	}
 
 	public void display()
 	{
 		System.out.println("AddressBook [First name=" + Firstname + ", Last name=" + Lastname + ", Address= " + Address + ", City=" + City + ", State="+ State + ", Zip=" + Zip + ", Phone=" + Phone+ ", Email=" + Emailid + "]");
 	}
 
-public class AddressBook{
+}
+public class AddressBook {
 
 	Scanner scan = new Scanner(System.in);
-		
+
 	public static void main(String[] args) {
 	
 		Scanner scan = new Scanner(System.in);
@@ -134,26 +163,33 @@ public class AddressBook{
 		
 		while(true)
         {
-	        	System.out.println("\nAddress Book Menu");
-	        	System.out.println("Enter 1 to Add Person ");
-				System.out.println("Enter 2 to Edit Person");
-			  	System.out.print("\nPlease enter your choice: ");
+	        System.out.println("\nAddress Book Menu");
+	        System.out.println("Enter 1 to Add Person ");
+	        System.out.println("Enter 2 to Edit Person");
+	        System.out.println("Enter 3 to Delete Person");
+	        System.out.print("\nPlease enter your choice: ");
+	        int choice=scan.nextInt();
+	        scan.nextLine();
 
-				int choice=scan.nextInt();
-	        	scan.nextLine();
-
-	        	switch (choice) 
-	        	{
-					case 1 :
-						contact.addDetails();
-						contact.display();
-			        	break;
-					case 2 :
-		        		contact.editDetails();
-		        		contact.display();
-		        		break;
-					default:
-		        		break;
+	        switch (choice) 
+	        {
+		        case 1 :
+		        	contact.addDetails();
+		        	contact.display();
+		        	break;
+			
+		        case 2 :
+		        	contact.editDetails();
+		        	contact.display();
+		        	break;
+	
+		        case 3 :
+		        	contact.deleteDetails();
+		        	contact.display();
+		        	break;
+		        default:
+		        	break;
+	
 	        }
 	    }
 	}
