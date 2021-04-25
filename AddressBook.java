@@ -69,9 +69,49 @@ class Contact{
 	    return emailid;
 	}
 
+	//UC2 Ability to add a new Contact to Address Book
+	public void addDetails() 
+	{	
+		Firstname.add(firstName());
+		Lastname.add(lastName());
+		Address.add(address());
+		City.add(city());
+		State.add(state());
+		Zip.add(zip());
+		Phone.add(phone());
+		Emailid.add(email());
+		System.out.println("\nYou have successfully added a new person!");
+
+	}
+
+
 public class AddressBook{
 
-	public static void main(String[] args){
+	Scanner scan = new Scanner(System.in);
+		
+	public static void main(String[] args) {
+	
+		Scanner scan = new Scanner(System.in);
+		Contact contact=new Contact(); 
+		
+		while(true)
+        {
+	        System.out.println("\nAddress Book Menu");
+	        System.out.println("Enter 1 to Add Person ");
+	        System.out.print("\nPlease enter your choice: ");
+	        int choice=scan.nextInt();
+	        scan.nextLine();
 
+	        switch (choice) 
+	        {
+		        	case 1 :
+			        	contact.addDetails();
+			        	contact.display();
+			        	break;
+					default:
+		        		break;
+
+	        }
+	    }
 	}
 }
