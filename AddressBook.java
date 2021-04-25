@@ -85,167 +85,203 @@ class Contact {
     }
 }
 
-//UC6 Refactor to add multiple Address Book to the System, Each Address Book has a unique Name
+//UC7 Ability to ensure there is no Duplicate Entry of the same Person in a particular Address Book
+class MultipleAddressBook {
+
+    public static int indexNum;
+    public static ArrayList<Contact> list = new ArrayList<>();
+    public String addressBookName;
+    public String firstName, lastName, address, city, state, email, zip, phone;
+    public Scanner input = new Scanner(System.in);
+
+    public MultipleAddressBook(String addressBookName) {
+        this.addressBookName = addressBookName;
+    }
+
+    public boolean checkName() {
+
+        System.out.print("Enter First Name ");
+        firstName = input.next();
+
+        for (indexNum = 0; indexNum < list.size(); indexNum++) {
+            if (firstName.equals(list.get(indexNum).getFirstName())) {
+                System.out.println("Contact Name Exists");
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public void addDetails() {
+
+    	System.out.println("\n------< Add details >------");
+    	if(!checkName()) {
+	    	System.out.print("Enter Last Name ");
+	    	lastName = input.next();
+	    	System.out.print("Enter Address ");
+	    	address = input.next();
+	    	System.out.print("Enter City ");
+	    	city = input.next();
+	    	System.out.print("Enter State ");
+	    	state = input.next();
+	    	System.out.print("Enter Zip ");
+	    	zip = input.next();
+	    	System.out.print("Enter Phone Number ");
+	    	phone = input.next();
+	    	System.out.print("Enter Email ");
+	    	email = input.next();
+	        list.add(new Contact(firstName, lastName, address, city, state, zip, phone, email));
+    	}
+    }
+
+    public void editDetails() {
+
+    	System.out.println("\n------< Edit details >------");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Details to be Edited: ");
+
+        if (checkName()) {
+            System.out.print("Enter First Name ");
+            list.get(indexNum).setFirstName(sc.next());
+            System.out.print("Enter Last Name ");
+            list.get(indexNum).setLastName(sc.next());
+            System.out.print("Enter Address ");
+            list.get(indexNum).setAddress(sc.next());
+            System.out.print("Enter City ");
+            list.get(indexNum).setCity(sc.next());
+            System.out.print("Enter State ");
+            list.get(indexNum).setState(sc.next());
+            System.out.print("Enter ZipCode ");
+            list.get(indexNum).setZip(sc.next());
+            System.out.print("Enter Phone Number ");
+            list.get(indexNum).setPhone(sc.next());
+            System.out.print("Enter Email ");
+            list.get(indexNum).setEmail(sc.next());
+
+            System.out.println("------Details Edited------");
+        }
+        else
+        	System.out.println("Invalid name!");
+    }
+
+    public void deleteDetails() {
+
+    	System.out.println("\n------< Delete details >------");
+        System.out.println("Details to be Deleted");
+        if (checkName()) {
+            list.remove(indexNum);
+            System.out.println("------Details Deleted------\n");
+        }
+        else
+        	System.out.println("Invalid name!") ;
+        
+    }
+
+    public void displayDetails() {
+
+    	if(list.isEmpty())
+    	{
+    		System.out.println("------No details found------");
+    	}
+        for (Contact contactDetails : list) {
+            System.out.println();
+            System.out.println(contactDetails);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return addressBookName;
+    }
+}
+
 public class AddressBook {
-	static ArrayList<Contact> list = new ArrayList<Contact>();
-	static Map<String,AddressBook> map = new HashMap<>();
-	static int number=0;
-	static int a;
 
-	static Scanner sc = new Scanner(System.in);
-	public static String check = "Y";
+    public static Scanner sc = new Scanner(System.in);
+    public static ArrayList<MultipleAddressBook> addressBook = new ArrayList<>();
+    private static int bookNumber = 0;
+    public static void addAddressBookDetails() {
 
-	public static void addDetails(){
+        System.out.print("Enter Name of Address Book = ");
+        String name = sc.next();
+        addressBook.add(new MultipleAddressBook(name));
+    }
 
-		check = "Y";
-		while((check.equals("Y")) || (check.equals("y"))) {
+    public static void pickAddressBook() {
 
-			System.out.println("------< Create Contact >------\n");
-			System.out.print("Enter First Name ");
-			String firstName=sc.next();
-			System.out.print("Enter LastName ");
-			String lastName=sc.next();
-			System.out.print("Enter Address ");
-			String area=sc.next();
-			System.out.print("Enter City ");
-			String city=sc.next();
-			System.out.print("Enter State ");
-			String state=sc.next();
-			System.out.print("Enter Zip ");
-			String zip=sc.next();
-			System.out.print("Enter Phone Number ");
-			String phoneNumber=sc.next();
-			System.out.print("Enter Email ");
-			String email=sc.next();
+        System.out.println("You are Currently in (" + addressBook.get(bookNumber) + ") AddressBook");
+        if (addressBook.size() > 0) {
+   
+        	for (int i = 0; i < addressBook.size(); i++)
+            	System.out.println(i + ". " + addressBook.get(i));
+            
+            System.out.print("Pick Address Book Number = ");
+            bookNumber = Integer.parseInt(sc.next());
+        }
+    }
 
-			System.out.println("Want To Add Another Contact ? Yes(y)/No(n)");
-			check=sc.next();
+     public static void option() {
 
-			list.add( new Contact(firstName, lastName, area, city, state, zip, phoneNumber, email));
-		}
-	}
+        Scanner scan = new Scanner(System.in);
 
-	public static void editDetails() {
+        String check = "y";
+        while (check.equalsIgnoreCase("Y")) {
 
-		String nameEdit;
-		System.out.println("\n------< Edit details >------");
-		System.out.println("Enter Name to edit the details = ");
-		nameEdit = sc.next();
+            System.out.println("Enter your choice");
+            System.out.println("1: Add Contact");
+            System.out.println("2: Edit Contact");
+            System.out.println("3: Delete Contact");
+            System.out.println("4: Display Contact");
+            System.out.println("5: Exit");
+            int choice = scan.nextInt();
+            switch (choice) {
+                case 1 :
+                    addressBook.get(bookNumber).addDetails();
+                    break;
+                case 2 :
+                	System.out.print("Do you want to Edit Contact ? (y/n)");
+ 	   				check=scan.next();
+   	 				if (check.equals("y") || check.equals("Y")) {
+    					addressBook.get(bookNumber).editDetails();
+    					}
+    				else
+    				{
+    					System.out.println("Nothing Edited");
+    				}
+                case 3 :
+                	System.out.print("Do you want to Delete Contact ? (y/n)");
+    				check=scan.next();
+    				if (check.equals("y") || check.equals("Y")) {
+    					addressBook.get(bookNumber).deleteDetails();
+    				}
+    				else{
+    					System.out.println("Nothing Deleted");
+    				}
+                case 4 :
+                    pickAddressBook();
+                    addressBook.get(bookNumber).displayDetails();
+                    break;
+                case 5 :
+                    System.out.println("Exit");
+                    check = "n";
+            }
+            System.out.println("Want to Make More Changes in This Address Book? (y/n)");
+            check=scan.next();
+        }
+    }
 
-			for(int i=0; i<list.size(); i++) {
+     public static void main(String[] args) {
 
-				if (nameEdit.equals(list.get(i).getFirstName())) {
-
-					System.out.print("Enter First Name ");
-					list.get(i).setFirstName(sc.next());
-					System.out.print("Enter Last Name ");
-					list.get(i).setLastName(sc.next());
-					System.out.print("Enter Arddress ");
-					list.get(i).setAddress(sc.next());
-					System.out.print("Enter City ");
-					list.get(i).setCity(sc.next());
-					System.out.print("Enter State ");
-					list.get(i).setState(sc.next());
-					System.out.print("Enter Zip ");
-					list.get(i).setZip(sc.next());
-					System.out.print("Enter Phone Number ");
-					list.get(i).setPhone(sc.next());
-					System.out.print("Enter Email ");
-					list.get(i).setEmail(sc.next());
-
-					System.out.println(list.get(i));
-					System.out.println("Details Edited!\n");
-				}
-				else {
-					System.out.println("Invalid name!");
-				}
-			}
-	}
-
-	public static void deleteDetails() { 
-		String nameDelete;
-		System.out.println("------< Delete Contact >------\n");
-		System.out.print("Enter FirstName");
-		nameDelete =sc.next();
-
-		for(int i=0; i<list.size(); i++) {
-			if (nameDelete.equals(list.get(0).getFirstName())) {
-				list.remove(0);
-         	System.out.println("Details Deleted!\n");
-			}
-			else {
-				System.out.println("Invalid name!");
-			}
-		}
-		
-	}
-
-	public static String multipleAddressBook() {
-
-		System.out.print("Enter Name of Address Book = ");
-		String name=sc.next();
-		AddressBook addressBook = new AddressBook();
-		map.put(name, addressBook);
-		System.out.println("New Address Book: " +name);
-		return name;
-	}
-
-	public static void main(String[] args){
-		
-		Scanner scan=new Scanner(System.in);
-		System.out.println("Welcome To Address Book");
-		check = "Y";
-		while((check.equals("Y")) || (check.equals("y"))) {
-
-			String name=multipleAddressBook();
-			System.out.println("\nAddress Book Menu");
-			System.out.println("Enter 1 to Add Person ");
-			System.out.println("Enter 2 to Edit Person");
-			System.out.println("Enter 3 to Delete Person");
-			System.out.println("Enter 4 to Display");
-			System.out.println("Enter 5 to Add Multiple");
-			System.out.print("\nPlease enter your choice: ");
-			int choice=scan.nextInt();
-			scan.nextLine(); 
-			switch (choice) 
-			{
-			case 1 :
-				addDetails();
-			case 2 :
-				System.out.print("Do you want to Edit Contact ? (y/n)");
-				check=sc.next();
-				if (check.equals("y") || check.equals("Y")) {
-					editDetails();
-				}
-				else{
-					System.out.println("Done");
-				}
-			case 3 :
-				System.out.print("Do you want to Delete Contact ? (y/n)");
-				check=sc.next();
-				if (check.equals("y") || check.equals("Y")) {
-					deleteDetails();
-				}
-				else{
-					System.out.println("Done");
-				}
-			case 4 :
-				System.out.println("Contacts in "+name+" AddressBook are: ");
-				if(list.isEmpty())
-				{
-					System.out.println("NO DETAILS FOUND!!");
-				}
-				for(a=number; a<list.size(); a++) {
-					System.out.println(list.get(a));
-					a++;
-				}
-				number=list.size();
-			case 5 :
-				System.out.println("Do You Want to Add More Address Book? (y/n)");
-				check=sc.next();
-				if(check.equalsIgnoreCase("n"))
-					System.out.println("Thank you!!!");
-			}
-		}
-	}
+        System.out.println("Welcome to Address Book");
+        String check;
+        while (true){
+            addAddressBookDetails();
+            option();
+            System.out.print("Want to Add More Address Book (y/n) ");
+            check = sc.next();
+            if(check.equalsIgnoreCase("n"))
+            	System.out.println("Okay! Thank You !!!");
+        }
+    }
 }
