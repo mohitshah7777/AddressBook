@@ -54,7 +54,7 @@ class Contact{
 		String zip=scan.nextLine();
 	    return zip;
 	}
-	
+
 	public String phone()
 	{
 		System.out.print("Enter Phone number: ");
@@ -98,7 +98,6 @@ class Contact{
 		int editPosition=Firstname.indexOf(editName);
 		return editPosition;
 	}
-	
 	public void editDetails() 
 	{
 			String nameEdit=usingEditName();
@@ -126,7 +125,7 @@ class Contact{
 		String editName=scan.nextLine();
 		return editName;
 	}
-
+	
 	public void deleteDetails()
 	{
 		String nameDelete=usingDeleteName();
@@ -145,28 +144,53 @@ class Contact{
 			System.out.println("\nYou have successfully Deleted the person Details!");	
 		}
 	}
-
+	
+	//UC5 Ability to add multiple person to Address Book
+	public void addMultipleDetails() 
+	{	
+		while(true)
+		{
+			Firstname.add(firstName());
+			Lastname.add(lastName());
+			Address.add(address());
+			City.add(city());
+			State.add(state());
+			Zip.add(zip());
+			Phone.add(phone());
+			Emailid.add(email());
+			
+			System.out.println("\nYou have successfully added a new person!");
+			
+			System.out.println("Do you want to exit? Y or N");
+			String validation=scan.nextLine();
+			
+			if(validation.equalsIgnoreCase("y"))
+				break;
+		}
+	}
+	
 	public void display()
 	{
 		System.out.println("AddressBook [First name=" + Firstname + ", Last name=" + Lastname + ", Address= " + Address + ", City=" + City + ", State="+ State + ", Zip=" + Zip + ", Phone=" + Phone+ ", Email=" + Emailid + "]");
 	}
-
 }
+
 public class AddressBook {
 
 	Scanner scan = new Scanner(System.in);
-
+		
 	public static void main(String[] args) {
 	
 		Scanner scan = new Scanner(System.in);
 		Contact contact=new Contact(); 
 		
 		while(true)
-        {
+		{
 	        System.out.println("\nAddress Book Menu");
 	        System.out.println("Enter 1 to Add Person ");
 	        System.out.println("Enter 2 to Edit Person");
 	        System.out.println("Enter 3 to Delete Person");
+	        System.out.println("Enter 4 to Add Multiple");
 	        System.out.print("\nPlease enter your choice: ");
 	        int choice=scan.nextInt();
 	        scan.nextLine();
@@ -187,6 +211,11 @@ public class AddressBook {
 		        	contact.deleteDetails();
 		        	contact.display();
 		        	break;
+		        	
+		        case 4 :
+		        	contact.addMultipleDetails();
+		        	contact.display();
+		        	break;			        
 		        default:
 		        	break;
 	
@@ -194,3 +223,5 @@ public class AddressBook {
 	    }
 	}
 }
+
+
