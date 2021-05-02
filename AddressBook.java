@@ -88,7 +88,7 @@ class Contact {
 class MultipleAddressBook {
 
     public static int indexNum;
-    public static ArrayList<Contact> list = new ArrayList<>();
+    public static ArrayList<Contact> list = new ArrayList<Contact>();
     public String addressBookName;
     public String firstName, lastName, address, city, state, email, zip, phone;
     public Scanner input = new Scanner(System.in);
@@ -201,6 +201,12 @@ public class AddressBook {
     private static int bookNumber = 0;
     private static String firstName,lastName,address,city,state,zip,phone,email;
 
+    public static Map<String, String> dictionaryCity=new HashMap<>();
+	public static Map<String, String> dictionaryState=new HashMap<>();
+
+	public static ArrayList<MultipleAddressBook> addressBookDetails=new ArrayList<>();
+
+    
     public static void addAddressBookDetails() {
         System.out.print("Enter Name of Address Book = ");
         String name = sc.next();
@@ -225,7 +231,6 @@ public class AddressBook {
         }
     }
 
-    //UC7 Ability to search Person in a City or State across the multiple AddressBook
     public static void personByState() {
 
 		System.out.println("Enter State Name");
@@ -258,11 +263,43 @@ public class AddressBook {
 			}
 	}
 
+	//UC9 Ability to view Persons by City or State
+	private static void cityPersonDict() {
+		for (MultipleAddressBook address: addressBook)
+			for (Contact contact: address.list) {
+				String name = contact.getFirstName() + " " + contact.getLastName();
+					dictionaryCity.put(name, contact.getCity());
+			}
+
+			System.out.println("Enter City");
+			city= sc.next();
+			for (Map.Entry<String, String> ls : dictionaryCity.entrySet())
+				if (city.equals(ls.getValue()))
+					System.out.println("Name " + ls.getKey());
+	}
+
+	private static void statePersonDict() {
+      for (MultipleAddressBook address: addressBook)
+         for (Contact contact: address.list) {
+            String name = contact.getFirstName() + " " + contact.getLastName();
+               dictionaryCity.put(name, contact.getState());
+         }
+
+         System.out.println("Enter State");
+         state= sc.next();
+         for (Map.Entry<String, String> ls : dictionaryCity.entrySet())
+            if (state.equals(ls.getValue()))
+               System.out.println("Name " + ls.getKey());
+   }
+
+	
 	public static void search() {
 
 		System.out.println("Choose Option");
 		System.out.println("1: By City Name" );
 		System.out.println("2: By State Name");
+		System.out.println("3: View Person in City");
+		System.out.println("4: View Person in State");
 
 		String choose=sc.next();
 		switch (choose) {
@@ -272,6 +309,12 @@ public class AddressBook {
 				break;
 			case "2":
 				personByState();
+				break;
+			case "3" :
+				cityPersonDict();
+				break;
+			case "4" :
+				statePersonDict();
 				break;
 			default :
 				System.out.println("Wrong Input");
