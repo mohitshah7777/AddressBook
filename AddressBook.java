@@ -85,7 +85,6 @@ class Contact {
     }
 }
 
-//UC7 Ability to ensure there is no Duplicate Entry of the same Person in a particular Address Book
 class MultipleAddressBook {
 
     public static int indexNum;
@@ -111,7 +110,6 @@ class MultipleAddressBook {
         }
         return false;
     }
-
 
     public void addDetails() {
 
@@ -201,8 +199,9 @@ public class AddressBook {
     public static Scanner sc = new Scanner(System.in);
     public static ArrayList<MultipleAddressBook> addressBook = new ArrayList<>();
     private static int bookNumber = 0;
-    public static void addAddressBookDetails() {
+    private static String firstName,lastName,address,city,state,zip,phone,email;
 
+    public static void addAddressBookDetails() {
         System.out.print("Enter Name of Address Book = ");
         String name = sc.next();
         addressBook.add(new MultipleAddressBook(name));
@@ -211,6 +210,11 @@ public class AddressBook {
     public static void pickAddressBook() {
 
         System.out.println("You are Currently in (" + addressBook.get(bookNumber) + ") AddressBook");
+        if(addressBook.isEmpty())
+        {
+        	System.out.println("NO DETAILS FOUND!");
+        }
+        
         if (addressBook.size() > 0) {
    
         	for (int i = 0; i < addressBook.size(); i++)
@@ -221,6 +225,59 @@ public class AddressBook {
         }
     }
 
+    //UC7 Ability to search Person in a City or State across the multiple AddressBook
+    public static void personByState() {
+
+		System.out.println("Enter State Name");
+		state = sc.next();
+			for (int i = 0; i < addressBook.size(); i++) {
+				addressBook.get(i);
+				for (int j = 0; j < MultipleAddressBook.list.size(); j++) {
+					addressBook.get(i);
+					if (MultipleAddressBook.list.get(j).getState().equals(state)) {
+						addressBook.get(i);
+						System.out.println(MultipleAddressBook.list.get(j));
+					}
+				}
+			}
+	}
+
+	public static void personByCity() {
+
+		System.out.println("Enter City Name");
+		city = sc.next();
+			for (int i = 0; i < addressBook.size(); i++) {
+				addressBook.get(i);
+				for (int j = 0; j < MultipleAddressBook.list.size(); j++) {
+					addressBook.get(i);
+					if (MultipleAddressBook.list.get(j).getCity().equals(city)) {
+						addressBook.get(i);
+						System.out.println(MultipleAddressBook.list.get(j));
+					}
+				}
+			}
+	}
+
+	public static void search() {
+
+		System.out.println("Choose Option");
+		System.out.println("1: By City Name" );
+		System.out.println("2: By State Name");
+
+		String choose=sc.next();
+		switch (choose) {
+
+			case "1" :
+				personByCity();
+				break;
+			case "2":
+				personByState();
+				break;
+			default :
+				System.out.println("Wrong Input");
+		}
+	}
+    
      public static void option() {
 
         Scanner scan = new Scanner(System.in);
@@ -241,10 +298,10 @@ public class AddressBook {
                     break;
                 case 2 :
                 	System.out.print("Do you want to Edit Contact ? (y/n)");
- 	   				check=scan.next();
-   	 				if (check.equals("y") || check.equals("Y")) {
+    				check=scan.next();
+    				if (check.equals("y") || check.equals("Y")) {
     					addressBook.get(bookNumber).editDetails();
-    					}
+    				}
     				else
     				{
     					System.out.println("Nothing Edited");
@@ -278,6 +335,19 @@ public class AddressBook {
         while (true){
             addAddressBookDetails();
             option();
+        
+            System.out.println("Do You Want to Search Contacts by City, State?");
+			System.out.println("Press y if You Want to Search");
+			String searchInput=sc.next();
+			if (searchInput.equalsIgnoreCase("y")) 
+			{
+				search();
+			}else if(searchInput.equalsIgnoreCase("n")){ 
+				System.out.println("You Can Proceed Further");
+			}else {
+				System.out.println("Wrong input! Proceed further" );
+			}
+			
             System.out.print("Want to Add More Address Book (y/n) ");
             check = sc.next();
             if(check.equalsIgnoreCase("n"))
