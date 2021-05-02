@@ -204,6 +204,9 @@ public class AddressBook {
     public static Map<String, String> dictionaryCity=new HashMap<>();
 	public static Map<String, String> dictionaryState=new HashMap<>();
 
+	public static Map<String, Integer> cityCount = new HashMap<>();
+	public static Map<String, Integer> stateCount = new HashMap<>();
+	
 	public static ArrayList<MultipleAddressBook> addressBookDetails=new ArrayList<>();
 
     
@@ -214,7 +217,6 @@ public class AddressBook {
     }
 
     public static void pickAddressBook() {
-
         System.out.println("You are Currently in (" + addressBook.get(bookNumber) + ") AddressBook");
         if(addressBook.isEmpty())
         {
@@ -232,7 +234,6 @@ public class AddressBook {
     }
 
     public static void personByState() {
-
 		System.out.println("Enter State Name");
 		state = sc.next();
 			for (int i = 0; i < addressBook.size(); i++) {
@@ -248,7 +249,6 @@ public class AddressBook {
 	}
 
 	public static void personByCity() {
-
 		System.out.println("Enter City Name");
 		city = sc.next();
 			for (int i = 0; i < addressBook.size(); i++) {
@@ -263,7 +263,6 @@ public class AddressBook {
 			}
 	}
 
-	//UC9 Ability to view Persons by City or State
 	private static void cityPersonDict() {
 		for (MultipleAddressBook address: addressBook)
 			for (Contact contact: address.list) {
@@ -292,6 +291,49 @@ public class AddressBook {
                System.out.println("Name " + ls.getKey());
    }
 
+	//UC-10 Ability to get number of contact persons i.e.	count by City or State
+	public static void setCityCount() {
+		for (MultipleAddressBook address: addressBook)
+			for (Contact contact: address.list) {
+				cityCount.put(contact.getCity(), 0);
+			}
+
+		for (Map.Entry<String, Integer> ls : cityCount.entrySet()) {
+			int count = 0;
+			for (MultipleAddressBook address: addressBook)
+				for (Contact contact: address.list)
+					if (contact.getCity().equals(ls.getKey())) {
+						count++;
+							cityCount.put(contact.getCity(), count);
+					}
+		}
+
+		for (Map.Entry<String, Integer> ls : cityCount.entrySet()) {
+			System.out.println("City: " + ls.getKey() + " Number of Person: " + ls.getValue());
+		}
+	}
+
+	public static void setStateCount() {
+		for (MultipleAddressBook address: addressBook)
+			for (Contact contact: address.list) {
+				stateCount.put(contact.getState(), 0);
+			}
+
+		for (Map.Entry<String, Integer> ls : stateCount.entrySet()) {
+			int count = 0;
+			for (MultipleAddressBook address: addressBook)
+				for (Contact contact: address.list)
+					if (contact.getState().equals(ls.getKey())) {
+						count++;
+							stateCount.put(contact.getState(), count);
+					}
+		}
+
+		for (Map.Entry<String, Integer> ls : stateCount.entrySet()) {
+			System.out.println("State: " + ls.getKey() + " Number of Person: " + ls.getValue());
+		}
+	}
+
 	
 	public static void search() {
 
@@ -300,6 +342,8 @@ public class AddressBook {
 		System.out.println("2: By State Name");
 		System.out.println("3: View Person in City");
 		System.out.println("4: View Person in State");
+		System.out.println("5: Total Persons in City");
+		System.out.println("6: Total Persons in State");
 
 		String choose=sc.next();
 		switch (choose) {
@@ -315,6 +359,12 @@ public class AddressBook {
 				break;
 			case "4" :
 				statePersonDict();
+				break;
+			case "5" :
+				setCityCount();
+				break;
+			case "6" :
+				setStateCount();
 				break;
 			default :
 				System.out.println("Wrong Input");
