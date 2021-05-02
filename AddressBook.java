@@ -204,8 +204,9 @@ public class AddressBook {
     public static Map<String, String> dictionaryCity=new HashMap<>();
 	public static Map<String, String> dictionaryState=new HashMap<>();
 
-	public static Map<String, Integer> cityCount = new HashMap<>();
-	public static Map<String, Integer> stateCount = new HashMap<>();
+	public static List<String> cityCount = new ArrayList<>();
+	public static List<String> stateCount = new ArrayList<>();
+
 	
 	public static ArrayList<MultipleAddressBook> addressBookDetails=new ArrayList<>();
 
@@ -233,107 +234,66 @@ public class AddressBook {
         }
     }
 
+    //Refactor : By using Stream functions 
     public static void personByState() {
+
 		System.out.println("Enter State Name");
 		state = sc.next();
-			for (int i = 0; i < addressBook.size(); i++) {
-				addressBook.get(i);
-				for (int j = 0; j < MultipleAddressBook.list.size(); j++) {
-					addressBook.get(i);
-					if (MultipleAddressBook.list.get(j).getState().equals(state)) {
-						addressBook.get(i);
-						System.out.println(MultipleAddressBook.list.get(j));
-					}
-				}
-			}
-	}
+
+		addressBook.forEach(address -> address.list.stream()
+						.filter(contact -> contact.getState().equals(state))
+						.forEach(System.out::println));
+		}
 
 	public static void personByCity() {
 		System.out.println("Enter City Name");
 		city = sc.next();
-			for (int i = 0; i < addressBook.size(); i++) {
-				addressBook.get(i);
-				for (int j = 0; j < MultipleAddressBook.list.size(); j++) {
-					addressBook.get(i);
-					if (MultipleAddressBook.list.get(j).getCity().equals(city)) {
-						addressBook.get(i);
-						System.out.println(MultipleAddressBook.list.get(j));
-					}
-				}
-			}
+
+		addressBook.forEach(address -> address.list.stream()
+						.filter(contact -> contact.getCity().equals(city))
+						.forEach(System.out::println));
 	}
 
 	private static void cityPersonDict() {
-		for (MultipleAddressBook address: addressBook)
-			for (Contact contact: address.list) {
-				String name = contact.getFirstName() + " " + contact.getLastName();
-					dictionaryCity.put(name, contact.getCity());
-			}
+		System.out.println("Enter City Name");
+		city=sc.next();
 
-			System.out.println("Enter City");
-			city= sc.next();
-			for (Map.Entry<String, String> ls : dictionaryCity.entrySet())
-				if (city.equals(ls.getValue()))
-					System.out.println("Name " + ls.getKey());
+		addressBook.forEach(address -> address.list.stream()
+                  .filter(contact -> contact.getCity().equals(city))
+                  .forEach(contact -> dictionaryCity.put((contact.getFirstName() + " " + contact.getLastName()), contact.getCity())));
+
+		dictionaryCity.forEach((key, value) -> System.out.println("Name "+key));
 	}
 
 	private static void statePersonDict() {
-      for (MultipleAddressBook address: addressBook)
-         for (Contact contact: address.list) {
-            String name = contact.getFirstName() + " " + contact.getLastName();
-               dictionaryCity.put(name, contact.getState());
-         }
+		System.out.println("Enter State Name");
+		state=sc.next();
 
-         System.out.println("Enter State");
-         state= sc.next();
-         for (Map.Entry<String, String> ls : dictionaryCity.entrySet())
-            if (state.equals(ls.getValue()))
-               System.out.println("Name " + ls.getKey());
-   }
+		addressBook.forEach(address -> address.list.stream()
+						.filter(contact -> contact.getState().equals(state))
+						.forEach(contact -> dictionaryState.put((contact.getFirstName() + " " + contact.getLastName()), contact.getState())));
 
-	//UC-10 Ability to get number of contact persons i.e.	count by City or State
-	public static void setCityCount() {
-		for (MultipleAddressBook address: addressBook)
-			for (Contact contact: address.list) {
-				cityCount.put(contact.getCity(), 0);
-			}
-
-		for (Map.Entry<String, Integer> ls : cityCount.entrySet()) {
-			int count = 0;
-			for (MultipleAddressBook address: addressBook)
-				for (Contact contact: address.list)
-					if (contact.getCity().equals(ls.getKey())) {
-						count++;
-							cityCount.put(contact.getCity(), count);
-					}
-		}
-
-		for (Map.Entry<String, Integer> ls : cityCount.entrySet()) {
-			System.out.println("City: " + ls.getKey() + " Number of Person: " + ls.getValue());
-		}
+		dictionaryState.forEach((key, value) -> System.out.println("Name "+key));
 	}
+
+	public static void setCityCount() {
+		addressBook.forEach(address -> address.list
+				.forEach(contact -> cityCount.add(contact.getCity())));
+
+		cityCount.stream().distinct()
+						  .forEach(placeName -> System.out.println("Number of People from " + placeName + " is : " + cityCount.stream()
+						  .filter(n1 -> n1.equals(placeName)).count()));
+		}
+
 
 	public static void setStateCount() {
-		for (MultipleAddressBook address: addressBook)
-			for (Contact contact: address.list) {
-				stateCount.put(contact.getState(), 0);
-			}
+		addressBook.forEach(address -> address.list
+				.forEach(contact -> stateCount.add(contact.getState())));
 
-		for (Map.Entry<String, Integer> ls : stateCount.entrySet()) {
-			int count = 0;
-			for (MultipleAddressBook address: addressBook)
-				for (Contact contact: address.list)
-					if (contact.getState().equals(ls.getKey())) {
-						count++;
-							stateCount.put(contact.getState(), count);
-					}
-		}
-
-		for (Map.Entry<String, Integer> ls : stateCount.entrySet()) {
-			System.out.println("State: " + ls.getKey() + " Number of Person: " + ls.getValue());
-		}
-	}
-
+		stateCount.stream().distinct()
+						   .forEach(placeName -> System.out.println("Number of People from " + placeName + " is : " + stateCount.stream()
+						   .filter(n1 -> n1.equals(placeName)).count()));
+		}	
 	
 	public static void search() {
 
